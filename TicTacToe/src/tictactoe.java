@@ -240,6 +240,7 @@ public class tictactoe {
 		return null;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static void checkRecord() {
 		JSONParser parser = new JSONParser();
 		try {
@@ -249,7 +250,19 @@ public class tictactoe {
 			score[2] = (long) jsonRead.get("player1");
 			score[3] = (long) jsonRead.get("player2");
 		} catch (FileNotFoundException e) { 
-			e.printStackTrace(); 
+			try {
+				PrintWriter out = new PrintWriter(new FileOutputStream("record.json"));
+				JSONObject jsonWrite = new JSONObject();
+				jsonWrite.put("player", 0);
+				jsonWrite.put("bot", 0);
+				jsonWrite.put("player1", 0);
+				jsonWrite.put("player2", 0);
+				out.write(jsonWrite.toString());
+				out.close();
+			} catch (IOException ioE) {
+				ioE.printStackTrace();
+			}
+			checkRecord();
 		} catch (ParseException e) {
 			e.printStackTrace(); 
 		} catch (IOException e) {
